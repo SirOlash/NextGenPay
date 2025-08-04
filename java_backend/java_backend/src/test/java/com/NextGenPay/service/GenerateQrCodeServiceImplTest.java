@@ -61,7 +61,7 @@ class GenerateQrCodeServiceImplTest {
         cashier.setSellerAdminId(admin.getSellerAdminId());
         cashier.setCashierId("cashier-123");
         cashier.setUserName("cashier");
-        cashier.setAccountNumber("1234567890");
+//        cashier.setAccountNumber("1234567890");
         cashierRepo.save(cashier);
     }
 

@@ -12,6 +12,7 @@ public class CreateCashierResponse {
 
     private String message;
     private String cashierId;
+    private String userName;
     private String sellerAdminId;
 }
 
