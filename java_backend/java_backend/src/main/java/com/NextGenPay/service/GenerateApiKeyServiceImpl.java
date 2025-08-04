@@ -20,8 +20,8 @@ public class GenerateApiKeyServiceImpl implements GenerateApiKeyService {
     private final SecureRandom random = new SecureRandom();
 
     @Override
-    public GenerateApiKeyResponse generateApiKey(GenerateApiKeyRequest request) {
-        SellerAdmin admin = sellerRepo.findBySellerAdminId(request.getSellerId())
+    public GenerateApiKeyResponse generateApiKey(String sellerId) {
+        SellerAdmin admin = sellerRepo.findBySellerAdminId(sellerId)
                 .orElseThrow(() -> new AccountNotFoundException("Account Not found!!!"));
 
         byte[] bytes = new byte[24];

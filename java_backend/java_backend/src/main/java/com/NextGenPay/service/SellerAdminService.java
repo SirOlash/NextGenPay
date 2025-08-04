@@ -13,6 +13,6 @@ public interface SellerAdminService {
 
     public SellerAdminRegisterResponse registerSellerAdmin(SellerAdminRegisterRequest request);
     public SellerAdminLoginResponse loginSellerAdmin(SellerAdminLoginRequest request);
-    public CreateCashierResponse createCashier(CreateCashierRequest request);
+    public CreateCashierResponse createCashier(String sellerId, CreateCashierRequest request);
 
 }

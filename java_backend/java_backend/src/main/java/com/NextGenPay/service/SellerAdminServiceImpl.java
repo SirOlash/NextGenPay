@@ -6,6 +6,7 @@ import com.NextGenPay.data.repository.SellerAdminRepository;
 import com.NextGenPay.dto.request.CreateCashierRequest;
 import com.NextGenPay.dto.request.SellerAdminLoginRequest;
 import com.NextGenPay.dto.request.SellerAdminRegisterRequest;
+import com.NextGenPay.dto.response.CashierResponse;
 import com.NextGenPay.dto.response.CreateCashierResponse;
 import com.NextGenPay.dto.response.SellerAdminLoginResponse;
 import com.NextGenPay.dto.response.SellerAdminRegisterResponse;
@@ -15,12 +16,18 @@ import com.NextGenPay.exception.InvalidLoginCredentials;
 import com.NextGenPay.util.HashPassword;
 import com.NextGenPay.util.JwtAuth;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
+@RequiredArgsConstructor
 public class SellerAdminServiceImpl implements SellerAdminService {
 
     @Autowired
@@ -65,17 +72,30 @@ public class SellerAdminServiceImpl implements SellerAdminService {
     }
 
     @Override
-    public CreateCashierResponse createCashier(CreateCashierRequest request) {
-        Optional<SellerAdmin> foundAdmin = sellerAdminRepository.findBySellerAdminId(request.getSellerAdminId());
-        if(foundAdmin == null){throw new AdminNotFoundException("Seller admin not found");}
+    public CreateCashierResponse createCashier(String sellerId, CreateCashierRequest request) {
+        Optional<SellerAdmin> foundAdmin = sellerAdminRepository.findBySellerAdminId(sellerId);
+        if(foundAdmin.isEmpty()){throw new AdminNotFoundException("Seller admin not found");}
 
         Cashier newCashier = new Cashier();
-        newCashier.setAccountNumber(request.getAccountNumber());
+        newCashier.setDateRegistered(LocalDate.now());
         newCashier.setUserName(request.getUserName());
         newCashier.setPhoneNumber(request.getPhoneNumber());
         newCashier.setSellerAdminId(foundAdmin.get().getSellerAdminId());
         Cashier savedCashier = cashierRepo.save(newCashier);
         String message = "Cashier created successfully";
-         return new CreateCashierResponse(message, savedCashier.getCashierId(), foundAdmin.get().getSellerAdminId());
+         return new CreateCashierResponse(message, savedCashier.getCashierId(),savedCashier.getUserName(), foundAdmin.get().getSellerAdminId());
     }
+
+    public List<CashierResponse> getCashiers(String sellerAdminId) {
+        List<Cashier> list = cashierRepo.findBySellerAdminId(sellerAdminId);
+        return list.stream()
+                .map(c -> new CashierResponse(
+                        c.getCashierId(),
+                        c.getUserName(),
+                        c.getPhoneNumber(),
+                        c.getDateRegistered()
+                ))
+                .collect(Collectors.toList());
+    }
+
 }

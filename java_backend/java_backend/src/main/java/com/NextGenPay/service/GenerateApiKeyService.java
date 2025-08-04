@@ -4,5 +4,5 @@ import com.NextGenPay.dto.request.GenerateApiKeyRequest;
 import com.NextGenPay.dto.response.GenerateApiKeyResponse;
 
 public interface GenerateApiKeyService {
-    GenerateApiKeyResponse generateApiKey(GenerateApiKeyRequest request);
+    GenerateApiKeyResponse generateApiKey(String sellerId);
 }

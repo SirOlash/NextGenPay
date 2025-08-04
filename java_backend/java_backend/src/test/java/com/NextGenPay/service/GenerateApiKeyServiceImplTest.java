@@ -38,9 +38,7 @@ class GenerateApiKeyServiceImplTest {
     @Test
     void generateApiKey_shouldAssignApiKeyAndReturnResponse() {
 
-        GenerateApiKeyRequest request = new GenerateApiKeyRequest("seller-123");
-
-        GenerateApiKeyResponse response = service.generateApiKey(request);
+        GenerateApiKeyResponse response = service.generateApiKey("seller-123");
 
         assertThat(response).isNotNull();
         assertThat(response.getApiKey().length()).isGreaterThanOrEqualTo(32);
@@ -55,9 +53,7 @@ class GenerateApiKeyServiceImplTest {
 
     @Test
     void generateApiKey_withUnknownSeller_throwsException() {
-        GenerateApiKeyRequest req = new GenerateApiKeyRequest("unknown");
-
-        assertThatThrownBy(() -> service.generateApiKey(req))
+        assertThatThrownBy(() -> service.generateApiKey("unknown"))
                 .isInstanceOf(AccountNotFoundException.class)
                 .hasMessageContaining("Account Not found!!!");
     }

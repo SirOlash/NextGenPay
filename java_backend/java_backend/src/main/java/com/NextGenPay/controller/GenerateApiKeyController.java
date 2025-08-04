@@ -17,8 +17,8 @@ public class GenerateApiKeyController {
 
     @PostMapping("/{sellerId}/apiKey")
     public ResponseEntity<GenerateApiKeyResponse> generateApiKey(
-            @RequestBody @Valid GenerateApiKeyRequest request) {
-        GenerateApiKeyResponse response = service.generateApiKey(request);
+            @PathVariable String sellerId) {
+        GenerateApiKeyResponse response = service.generateApiKey(sellerId);
         return ResponseEntity.ok(response);
     }
 }
