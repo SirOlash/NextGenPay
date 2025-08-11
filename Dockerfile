@@ -15,7 +15,7 @@ COPY .mvn .mvn
 
 # Copy the project files
 COPY pom.xml .
-COPY src src
+COPY src ./src
 
 # Make the mvnw script executable
 RUN chmod +x mvnw
