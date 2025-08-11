@@ -6,7 +6,7 @@ WORKDIR /app
 
 # Copy the project files from the correct location
 COPY java_backend/pom.xml .
-COPY java_backend/src
+COPY java_backend/src ./src/
 
 # Build the application
 RUN --mount=type=cache,target=/root/.m2 ./mvnw clean package -DskipTests
