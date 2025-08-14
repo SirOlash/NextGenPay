@@ -5,11 +5,13 @@ FROM eclipse-temurin:21-jdk-jammy
 WORKDIR /app
 
 # Copy the project files from the correct location
-COPY java_backend/pom.xml .
+COPY java_backend/pom.xml ./pom.xml
 COPY java_backend/src ./src/
 
 # Build the application
-RUN --mount=type=cache,target=/root/.m2 ./mvnw clean package -DskipTests
+RUN apt-get update && apt-get install -y maven
+RUN mvn clean package -DskipTests
+
 
 # Use JRE for the final image to reduce size
 FROM eclipse-temurin:21-jre-jammy
