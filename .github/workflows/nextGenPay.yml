@@ -33,7 +33,7 @@ jobs:
         run: mvn clean package --file java_backend/java_backend/pom.xml
 
       - name: Build with Maven (skip tests)
-        run: mvn -B clean package -DskipTests --file java_backend/pom.xml
+        run: mvn -B clean package -DskipTests --file java_backend/java_backend/pom.xml
 
 
 
