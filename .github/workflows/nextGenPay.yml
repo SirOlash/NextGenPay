@@ -30,6 +30,6 @@ jobs:
           java-version: '21'
 
       - name: Build with Maven
-        run: mvn clean package --file java_backend/pom.xml
+        run: mvn clean package --file java_backend/java_backend/pom.xml
 
 
