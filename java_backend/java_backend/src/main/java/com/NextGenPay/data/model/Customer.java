@@ -19,6 +19,9 @@ public class Customer{
 
     private String phoneNumber;
 
+    private String firstName;
+    private String lastName;
+
     CustomerStatus customerStatus;
 
     private String profileId;

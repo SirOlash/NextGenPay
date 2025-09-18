@@ -80,6 +80,7 @@ public class SellerAdminServiceImpl implements SellerAdminService {
         newCashier.setDateRegistered(LocalDate.now());
         newCashier.setUserName(request.getUserName());
         newCashier.setPhoneNumber(request.getPhoneNumber());
+        newCashier.setAccountNumber(request.getAccountNumber());
         newCashier.setSellerAdminId(foundAdmin.get().getSellerAdminId());
         Cashier savedCashier = cashierRepo.save(newCashier);
         String message = "Cashier created successfully";

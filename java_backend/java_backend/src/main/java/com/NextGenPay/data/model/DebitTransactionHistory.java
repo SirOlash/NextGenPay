@@ -17,7 +17,9 @@ public class DebitTransactionHistory {
 
     private String transactionId;
     private String cashierId;
+    private String customerAccountNumber;
     private double amount;
+    private PaymentType type;
     private LocalDate transactionDate;
     private TransactionStatus status;
     private String description;

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class    GenerateWalletController {
 
     private final GenerateWalletServiceImpl service;
-
+//todo 2 later
     @PostMapping
     public ResponseEntity<GenerateWalletResponse> createWallet(@RequestBody @Valid GenerateWalletRequest request){
         GenerateWalletResponse response = service.generateWallet(request);

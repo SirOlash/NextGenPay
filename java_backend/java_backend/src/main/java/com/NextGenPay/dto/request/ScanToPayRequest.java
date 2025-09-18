@@ -1,4 +1,5 @@
 package com.NextGenPay.dto.request;
+import com.NextGenPay.data.model.PaymentType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -22,4 +23,6 @@ public class ScanToPayRequest {
     private String accountNumber;
     @NotNull(message="This field is required")
     private String customerId;
+    @NotNull(message="This field is required")
+    PaymentType paymentType;
 }

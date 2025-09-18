@@ -1,17 +1,17 @@
 package com.NextGenPay.service;
-import com.NextGenPay.data.model.Cashier;
-import com.NextGenPay.data.model.DebitTransactionHistory;
-import com.NextGenPay.data.model.TransactionStatus;
-import com.NextGenPay.data.model.Wallet;
+import com.NextGenPay.data.model.*;
 import com.NextGenPay.data.repository.CashierRepo;
 import com.NextGenPay.data.repository.DebitTransactionHistoryRepo;
+import com.NextGenPay.data.repository.SellerAdminRepository;
 import com.NextGenPay.data.repository.WalletRepository;
 import com.NextGenPay.dto.request.ScanToPayRequest;
+import com.NextGenPay.exception.AdminNotFoundException;
 import com.NextGenPay.exception.WalletNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 
 @Service
@@ -21,6 +21,9 @@ public class CustomerServiceImpl implements CustomerService{
     WalletRepository walletRepo;
     @Autowired
     CashierRepo cashierRepo;
+
+    @Autowired
+    SellerAdminRepository sellerAdminRepo;
     @Autowired
     DebitTransactionHistoryRepo debitTransactionHistoryRepo;
 
@@ -31,16 +34,20 @@ public class CustomerServiceImpl implements CustomerService{
         validator(request);
         Wallet customerWallet = walletRepo.findByCustomerId(request.getCustomerId());
         Cashier cashier = cashierRepo.findByCashierId(request.getCashierId());
+        Optional<SellerAdmin> sellerAdmin = sellerAdminRepo.findBySellerAdminId(cashier.getSellerAdminId());
+        if(sellerAdmin.isEmpty()){throw new AdminNotFoundException("Seller admin not found");}
         DebitTransactionHistory transactionHistory = new DebitTransactionHistory();
 
         customerWallet.setBalance(customerWallet.getBalance() - request.getAmount());
         walletRepo.save(customerWallet);
         transactionHistory.setAmount(request.getAmount());
+        transactionHistory.setCustomerAccountNumber(customerWallet.getAccountNumber());
         transactionHistory.setTransactionId("TXN" + System.currentTimeMillis());
         transactionHistory.setTransactionDate(LocalDate.now());
         transactionHistory.setStatus(TransactionStatus.COMPLETED);
-        transactionHistory.setDescription("Debited from wallet");
+        transactionHistory.setDescription(sellerAdmin.get().getBusinessName());
         transactionHistory.setCashierId(cashier.getCashierId());
+        transactionHistory.setType(request.getPaymentType());
         return debitTransactionHistoryRepo.save(transactionHistory);
     }
 

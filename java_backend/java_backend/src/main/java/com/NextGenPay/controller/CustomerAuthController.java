@@ -24,7 +24,6 @@ public class CustomerAuthController {
     public ResponseEntity<CustomerRegisterResponse> registerCustomer(@RequestBody @Valid CustomerRegisterRequest request){
         return ResponseEntity.ok(customerService.registerCustomer(request));
     }
-
     @PostMapping("/login")
     public ResponseEntity<CustomerLoginResponse> loginCustomer(@RequestBody @Valid CustomerLoginRequest request){
         return ResponseEntity.ok(customerService.loginCustomer(request));

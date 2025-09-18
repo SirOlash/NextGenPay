@@ -16,6 +16,9 @@ public class GenerateQrCodeRequest {
     @NotBlank(message = "Field cannot be empty" )
     private String cashierId;
 
+    @NotBlank(message = "Field cannot be empty")
+
+
     @NotNull(message = "Field cannot be empty") @DecimalMin("0.01")
     private BigDecimal amount;
 

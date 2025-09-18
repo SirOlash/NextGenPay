@@ -19,6 +19,7 @@ public class Cashier {
     private String cashierId;
     private String userName;
     private String phoneNumber;
+    private String accountNumber;
     private LocalDate dateRegistered;
     private String sellerAdminId;
 

@@ -16,14 +16,16 @@ public class CustomerRegisterRequest {
     private String email;
 
     @NotNull(message="This field is required")
+    private String phoneNumber;
+
+    @NotNull(message="This field is required")
     private String password;
 
     @NotNull(message="This field is required")
-    private String phoneNumber;
+    private String firstName;
 
-    private String profileId;
-
-    CustomerStatus customerStatus;
+    @NotNull(message="This field is required")
+    private String lastName;
 
 
 

@@ -43,24 +43,24 @@ public class CustomerAuthServiceImpl implements CustomerAuthService {
        Customer customer = new Customer();
        customer.setEmail(registerRequest.getEmail());
        customer.setPhoneNumber(registerRequest.getPhoneNumber());
-       customer.setCustomerStatus(CustomerStatus.INACTIVE);
+       customer.setFirstName(registerRequest.getFirstName());
+       customer.setLastName(registerRequest.getLastName());
+       customer.setCustomerStatus(CustomerStatus.ACTIVE);
        customer.setPassword(hashedPassword);
        Customer savedCustomer = customerRepo.save(customer);
        String message = "Customer registered successfully";
-       CustomerRegisterResponse registerResponse = new CustomerRegisterResponse(message,savedCustomer.getCustomerId());
 
-       return registerResponse;
+        return new CustomerRegisterResponse(message,savedCustomer.getCustomerId());
     }
 
     @Override
     public CustomerLoginResponse loginCustomer(CustomerLoginRequest loginRequest) {
-
         Customer foundCustomer = customerRepo.findByEmail(loginRequest.getEmail());
-        if(!HashPassword.verifyPassword(foundCustomer.getPassword(),loginRequest.getPassword())){
-            throw new InvalidPasswordException("Invalid password, please try again.");}
-        if(foundCustomer == null){
-            throw new CustomerNotFoundException("No Customer Found");
-        }
+        if(foundCustomer == null || !HashPassword.verifyPassword(foundCustomer.getPassword(),loginRequest.getPassword()) ){
+            throw new InvalidPasswordException("Invalid Credentials");}
+//        if(foundCustomer == null){
+//            throw new CustomerNotFoundException("No Customer Found");
+//        }
         String token = jwtAuth.generateToken(loginRequest.getEmail());
         CustomerLoginResponse loginResponse = new CustomerLoginResponse();
         loginResponse.setToken(token);

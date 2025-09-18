@@ -16,9 +16,9 @@ public class CustomerProfile {
 
     private String customerId;
 
-    private String firstName;
+    private String nin;
 
-    private String lastName;
+    private String bvn;
 
     private String address;
 

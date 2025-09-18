@@ -1,4 +1,5 @@
 package com.NextGenPay.dto.request;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,6 +18,8 @@ public class CreateCashierRequest {
     private String userName;
     @NotNull(message = "This field is required")
     private String phoneNumber;
+    @NotBlank(message = "This field is required")
+    private String accountNumber;
     @NotNull(message = "This field is required")
     private LocalDate dateRegistered;
 
