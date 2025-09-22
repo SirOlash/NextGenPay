@@ -1,4 +1,4 @@
-package com.NextGenPay.service;
+package com.NextGenPay.service.sellerWebApp;
 import com.NextGenPay.dto.request.GenerateQrCodeRequest;
 import com.NextGenPay.dto.response.GenerateQrCodeResponse;
 

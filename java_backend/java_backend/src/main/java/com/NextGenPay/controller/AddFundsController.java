@@ -1,7 +1,7 @@
 package com.NextGenPay.controller;
 import com.NextGenPay.dto.request.AddFundsRequest;
 import com.NextGenPay.dto.response.AddFundsResponse;
-import com.NextGenPay.service.AddFundsServiceImpl;
+import com.NextGenPay.service.customerMobileApp.AddFundsServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

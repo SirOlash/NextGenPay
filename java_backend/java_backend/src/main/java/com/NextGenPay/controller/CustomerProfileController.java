@@ -1,6 +1,6 @@
 package com.NextGenPay.controller;
 import com.NextGenPay.dto.request.CreateProfileRequest;
-import com.NextGenPay.service.CustomerProfileServiceImpl;
+import com.NextGenPay.service.customerMobileApp.CustomerProfileServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

@@ -22,8 +22,6 @@ public class CustomerProfile {
 
     private String address;
 
-    private String userName;
-
     private LocalDate dateOfBirth;
 
     private String profileImage;

@@ -2,7 +2,7 @@ package com.NextGenPay.controller;
 
 import com.NextGenPay.dto.request.GenerateQrCodeRequest;
 import com.NextGenPay.dto.response.GenerateQrCodeResponse;
-import com.NextGenPay.service.GenerateQrCodeService;
+import com.NextGenPay.service.sellerWebApp.GenerateQrCodeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

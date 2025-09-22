@@ -1,4 +1,4 @@
-package com.NextGenPay.service;
+package com.NextGenPay.service.customerMobileApp;
 import com.NextGenPay.data.model.*;
 import com.NextGenPay.data.repository.CashierRepo;
 import com.NextGenPay.data.repository.DebitTransactionHistoryRepo;
@@ -15,7 +15,7 @@ import java.util.Optional;
 
 
 @Service
-public class CustomerServiceImpl implements CustomerService{
+public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
     WalletRepository walletRepo;

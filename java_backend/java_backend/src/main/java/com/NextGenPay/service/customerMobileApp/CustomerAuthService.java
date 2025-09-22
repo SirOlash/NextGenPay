@@ -1,4 +1,4 @@
-package com.NextGenPay.service;
+package com.NextGenPay.service.customerMobileApp;
 import com.NextGenPay.dto.request.CustomerLoginRequest;
 import com.NextGenPay.dto.request.CustomerRegisterRequest;
 import com.NextGenPay.dto.response.CustomerLoginResponse;

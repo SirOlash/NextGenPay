@@ -1,7 +1,7 @@
 package com.NextGenPay.controller;
 import com.NextGenPay.data.model.DebitTransactionHistory;
 import com.NextGenPay.dto.request.ScanToPayRequest;
-import com.NextGenPay.service.CustomerService;
+import com.NextGenPay.service.customerMobileApp.CustomerService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

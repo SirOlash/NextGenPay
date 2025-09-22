@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CustomerProfileRepo extends MongoRepository<CustomerProfile,String> {
 
-    boolean existsByUserName(String userName);
+//    boolean existsByUserName(String userName);
 
 }

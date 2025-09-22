@@ -1,4 +1,4 @@
-package com.NextGenPay.service;
+package com.NextGenPay.service.sellerWebApp;
 
 import com.NextGenPay.data.model.SellerAdmin;
 import com.NextGenPay.data.repository.SellerAdminRepository;
