@@ -1,4 +1,4 @@
-package com.NextGenPay.service;
+package com.NextGenPay.service.customerMobileApp;
 import com.NextGenPay.data.model.Customer;
 import com.NextGenPay.data.model.CustomerStatus;
 import com.NextGenPay.data.repository.CustomerProfileRepo;

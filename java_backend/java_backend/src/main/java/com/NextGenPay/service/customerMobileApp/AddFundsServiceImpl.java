@@ -1,4 +1,4 @@
-package com.NextGenPay.service;
+package com.NextGenPay.service.customerMobileApp;
 import com.NextGenPay.data.model.TransactionsHistory;
 import com.NextGenPay.data.model.Wallet;
 import com.NextGenPay.data.repository.TransactionsHistoryRepository;
@@ -9,8 +9,6 @@ import com.NextGenPay.exception.AccountNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
 
 
 @Service

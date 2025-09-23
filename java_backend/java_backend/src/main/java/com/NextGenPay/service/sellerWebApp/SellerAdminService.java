@@ -1,4 +1,4 @@
-package com.NextGenPay.service;
+package com.NextGenPay.service.sellerWebApp;
 import com.NextGenPay.dto.request.CreateCashierRequest;
 import com.NextGenPay.dto.request.SellerAdminLoginRequest;
 import com.NextGenPay.dto.request.SellerAdminRegisterRequest;

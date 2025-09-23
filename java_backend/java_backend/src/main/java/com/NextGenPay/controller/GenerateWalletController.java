@@ -2,7 +2,7 @@ package com.NextGenPay.controller;
 
 import com.NextGenPay.dto.request.GenerateWalletRequest;
 import com.NextGenPay.dto.response.GenerateWalletResponse;
-import com.NextGenPay.service.GenerateWalletServiceImpl;
+import com.NextGenPay.service.customerMobileApp.GenerateWalletServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class    GenerateWalletController {
 
     private final GenerateWalletServiceImpl service;
-//todo 2 later
     @PostMapping
     public ResponseEntity<GenerateWalletResponse> createWallet(@RequestBody @Valid GenerateWalletRequest request){
         GenerateWalletResponse response = service.generateWallet(request);

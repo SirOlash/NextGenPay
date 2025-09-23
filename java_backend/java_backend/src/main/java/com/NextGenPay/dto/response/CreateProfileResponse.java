@@ -14,6 +14,5 @@ public class CreateProfileResponse {
 
     private String message;
     private String profileId;
-    private String userName;
 
 }

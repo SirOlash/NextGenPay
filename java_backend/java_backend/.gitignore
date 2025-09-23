@@ -38,6 +38,7 @@ build/
 !**/src/test/**/build/
 
 /src/test/resources
+/src/main/java/com.NextGenPay/debug
 
 ### VS Code ###
 .vscode/

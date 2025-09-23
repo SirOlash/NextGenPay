@@ -1,4 +1,4 @@
-package com.NextGenPay.service;
+package com.NextGenPay.service.sellerWebApp;
 
 import com.NextGenPay.data.model.Cashier;
 import com.NextGenPay.data.model.Payload;
@@ -14,10 +14,7 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.io.ByteArrayOutputStream;
 import java.time.Instant;
@@ -25,7 +22,7 @@ import java.util.Base64;
 
 @Service
 @RequiredArgsConstructor
-public class GenerateQrCodeServiceImpl implements  GenerateQrCodeService {
+public class GenerateQrCodeServiceImpl implements GenerateQrCodeService {
     private final SellerAdminRepository sellerRepo;
     private final ObjectMapper objectMapper;
     private final CashierRepo cashierRepo;

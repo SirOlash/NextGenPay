@@ -1,4 +1,4 @@
-package com.NextGenPay.service;
+package com.NextGenPay.service.customerMobileApp;
 
 import com.NextGenPay.dto.request.AddFundsRequest;
 import com.NextGenPay.dto.response.AddFundsResponse;

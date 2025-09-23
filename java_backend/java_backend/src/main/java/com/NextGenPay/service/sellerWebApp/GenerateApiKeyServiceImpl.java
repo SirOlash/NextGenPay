@@ -1,9 +1,7 @@
-package com.NextGenPay.service;
+package com.NextGenPay.service.sellerWebApp;
 
 import com.NextGenPay.data.model.SellerAdmin;
-import com.NextGenPay.data.model.Wallet;
 import com.NextGenPay.data.repository.SellerAdminRepository;
-import com.NextGenPay.dto.request.GenerateApiKeyRequest;
 import com.NextGenPay.dto.response.GenerateApiKeyResponse;
 import com.NextGenPay.exception.AccountNotFoundException;
 import lombok.RequiredArgsConstructor;

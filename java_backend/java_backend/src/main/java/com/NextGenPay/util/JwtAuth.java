@@ -1,58 +1,52 @@
 package com.NextGenPay.util;
+
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
+
 import java.security.Key;
-import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-
 @Component
 public class JwtAuth {
 
-    private String secretKey;
+    private final Key signingKey;
+    private final long expirationMillis;
 
-    public JwtAuth() {
-        secretKey = generateSecretKey();
+    public JwtAuth(
+            @Value("${jwt.secret}") String jwtSecretBase64,
+            @Value("${jwt.expirationMs:600000}") long expirationMillis
+    ) {
+        // decode Base64 secret configured in application.properties
+        byte[] keyBytes = Decoders.BASE64.decode(jwtSecretBase64.trim());
+        this.signingKey = Keys.hmacShaKeyFor(keyBytes);
+        this.expirationMillis = expirationMillis;
     }
 
     public String generateToken(String email) {
         Map<String, Object> claims = new HashMap<>();
+        long now = System.currentTimeMillis();
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(email)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() +1000*60*3))
-                .signWith(getKey(), SignatureAlgorithm.HS256)
+                .setIssuedAt(new Date(now))
+                .setExpiration(new Date(now + expirationMillis))
+                .signWith(signingKey, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public String generateSecretKey(){
-        try{
-            KeyGenerator keyGenerator = KeyGenerator.getInstance("HmacSHA256");
-            SecretKey secretKey = keyGenerator.generateKey();
-            System.out.println("SecretKey: " + secretKey.toString());
-            return Base64.getEncoder().encodeToString(secretKey.getEncoded());
-        } catch (NoSuchAlgorithmException e){
-            throw new RuntimeException("Error generating secret key", e);
-        }
-    }
-
-    private Key getKey() {
-        byte[] keybytes = Decoders.BASE64.decode(secretKey);
-        return Keys.hmacShaKeyFor(keybytes);
-    }
-
     public boolean validateToken(String token, String id) {
-        final String extractedId = extractId(token);
-        return (extractedId.equals(id) && !isTokenExpired(token));
+        try {
+            final String extractedId = extractId(token);
+            return (extractedId.equals(id) && !isTokenExpired(token));
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     private boolean isTokenExpired(String token) {
@@ -60,10 +54,12 @@ public class JwtAuth {
     }
 
     private Date extractExpiration(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getExpiration();
+        return Jwts.parserBuilder().setSigningKey(signingKey).build()
+                .parseClaimsJws(token).getBody().getExpiration();
     }
 
     public String extractId(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parserBuilder().setSigningKey(signingKey).build()
+                .parseClaimsJws(token).getBody().getSubject();
     }
 }

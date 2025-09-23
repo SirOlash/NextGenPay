@@ -1,9 +1,7 @@
 package com.NextGenPay.controller;
 
-import com.NextGenPay.dto.request.GenerateApiKeyRequest;
 import com.NextGenPay.dto.response.GenerateApiKeyResponse;
-import com.NextGenPay.service.GenerateApiKeyService;
-import jakarta.validation.Valid;
+import com.NextGenPay.service.sellerWebApp.GenerateApiKeyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

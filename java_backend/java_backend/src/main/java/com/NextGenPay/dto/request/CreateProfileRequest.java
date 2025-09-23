@@ -12,17 +12,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class CreateProfileRequest {
 
-    @NotNull(message = "This field is required")
-    private String firstName;
-
-    @NotNull(message = "This field is required")
-    private String lastName;
-
     @NotNull(message ="This field is required")
     private String address;
-
-    @NotNull(message = "This field is required")
-    private String userName;
 
     @NotNull(message = "This field is required")
     private LocalDate dateOfBirth;
@@ -31,6 +22,12 @@ public class CreateProfileRequest {
 
     @NotNull(message = "This field is required")
     private String customerId;
+
+    @NotNull(message = "This field is required")
+    private String nin;
+
+    @NotNull(message = "This field is required")
+    private String bvn;
 
 
 
