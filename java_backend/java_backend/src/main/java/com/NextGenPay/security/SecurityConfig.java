@@ -1,5 +1,6 @@
 package com.NextGenPay.security;
 
+import io.jsonwebtoken.io.Decoders;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -43,8 +44,9 @@ public class SecurityConfig {
     }
 
     @Bean
-    public JwtDecoder jwtDecoder() {
-        byte[] keyBytes = jwtSecret.getBytes(StandardCharsets.UTF_8);
+    public JwtDecoder jwtDecoder(@Value("${jwt.secret}") String jwtSecretBase64) {
+        // Decode Base64 secret (same as JwtAuth)
+        byte[] keyBytes = Decoders.BASE64.decode(jwtSecretBase64.trim());
         SecretKeySpec secretKey = new SecretKeySpec(keyBytes, "HmacSHA256");
         return NimbusJwtDecoder.withSecretKey(secretKey).build();
     }

@@ -1,105 +1,65 @@
 package com.NextGenPay.util;
-import io.jsonwebtoken.Claims;
+
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
+
 import java.security.Key;
-import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
-
 
 @Component
 public class JwtAuth {
 
-    @Value("${jwt.secret}")
-    private String jwtSecretBase64;
+    private final Key signingKey;
+    private final long expirationMillis;
 
-    @Value("${jwt.expirationMs:600000}")
-    private long jwtExpirationMs;
-
-    private SecretKey secretKey;
-
-    @PostConstruct
-    private void init() {
-        byte[] keyBytes = Decoders.BASE64.decode(jwtSecretBase64);
-        this.secretKey = Keys.hmacShaKeyFor(keyBytes);
+    public JwtAuth(
+            @Value("${jwt.secret}") String jwtSecretBase64,
+            @Value("${jwt.expirationMs:600000}") long expirationMillis
+    ) {
+        // decode Base64 secret configured in application.properties
+        byte[] keyBytes = Decoders.BASE64.decode(jwtSecretBase64.trim());
+        this.signingKey = Keys.hmacShaKeyFor(keyBytes);
+        this.expirationMillis = expirationMillis;
     }
 
-    public String generateToken(String subject, Map<String, Object> extraClaims) {
-        Date now = new Date();
-        Date expiry = new Date(now.getTime() + jwtExpirationMs);
-
+    public String generateToken(String email) {
+        Map<String, Object> claims = new HashMap<>();
+        long now = System.currentTimeMillis();
         return Jwts.builder()
-                .setClaims(extraClaims)
-                .setSubject(subject)
-                .setIssuedAt(now)
-                .setExpiration(expiry)
-                .signWith(secretKey, SignatureAlgorithm.HS256)
+                .setClaims(claims)
+                .setSubject(email)
+                .setIssuedAt(new Date(now))
+                .setExpiration(new Date(now + expirationMillis))
+                .signWith(signingKey, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public String generateToken(String subject) {
-        return generateToken(subject, Map.of());
-    }
-
-    private Claims extractAllClaims(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(secretKey)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-    }
-
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
-    }
-
-    public String extractSubject(String token) {
-        return extractClaim(token, Claims::getSubject);
-    }
-
-    public Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
-    }
-
-    public boolean isTokenExpired(String token) {
-        Date exp = extractExpiration(token);
-        return exp.before(new Date());
-    }
-
-    public boolean validateToken(String token, String expectedSubject) {
+    public boolean validateToken(String token, String id) {
         try {
-            final String sub = extractSubject(token);
-            return (sub != null && sub.equals(expectedSubject) && !isTokenExpired(token));
+            final String extractedId = extractId(token);
+            return (extractedId.equals(id) && !isTokenExpired(token));
         } catch (Exception e) {
             return false;
         }
     }
 
-    /**
-     * More general validation — returns true if the token signature is valid and not expired.
-     */
-    public boolean validateTokenSignatureAndExpiry(String token) {
-        try {
-            // parseClaimsJws will throw if signature invalid or token malformed
-            Claims claims = extractAllClaims(token);
-            return !isTokenExpired(token);
-        } catch (Exception e) {
-            return false;
-        }
+    private boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
     }
 
+    private Date extractExpiration(String token) {
+        return Jwts.parserBuilder().setSigningKey(signingKey).build()
+                .parseClaimsJws(token).getBody().getExpiration();
+    }
 
-
+    public String extractId(String token) {
+        return Jwts.parserBuilder().setSigningKey(signingKey).build()
+                .parseClaimsJws(token).getBody().getSubject();
+    }
 }
