@@ -44,10 +44,24 @@ public class SecurityConfig {
     }
 
     @Bean
-    public JwtDecoder jwtDecoder(@Value("${jwt.secret}") String jwtSecretBase64) {
+    public JwtDecoder jwtDecoder(@Value("${jwt.secret}") String jwtSecretRaw) {
         // Decode Base64 secret (same as JwtAuth)
-        byte[] keyBytes = Decoders.BASE64.decode(jwtSecretBase64.trim());
-        SecretKeySpec secretKey = new SecretKeySpec(keyBytes, "HmacSHA256");
+        byte[] keyBytes;
+        try {
+            keyBytes = Decoders.BASE64.decode(jwtSecretRaw.trim());
+        } catch (Exception ex) {
+            keyBytes = jwtSecretRaw.getBytes(java.nio.charset.StandardCharsets.UTF_8);
+        }
+        if (keyBytes.length < 32) {
+            try {
+                // if too short (< 32 bytes), derive a 32-byte key via SHA-256
+                java.security.MessageDigest md = java.security.MessageDigest.getInstance("SHA-256");
+                keyBytes = md.digest(keyBytes); // 32 bytes now
+            } catch (Exception ex) {
+                throw new IllegalStateException("Unable to derive jwt secret key", ex);
+            }
+        }
+        javax.crypto.spec.SecretKeySpec secretKey = new javax.crypto.spec.SecretKeySpec(keyBytes, "HmacSHA256");
         return NimbusJwtDecoder.withSecretKey(secretKey).build();
     }
 
